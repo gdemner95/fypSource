@@ -102,7 +102,8 @@ public:
 
                     if(positionInBuffer < currentSound.getNumSamples()){
                         const float sampleValue = currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer);
-                        outputBuffer.addSample (i, startSample, sampleValue * fLevel);
+                        
+                        outputBuffer.addSample (i, startSample, (sampleValue * fabs(i - fPan)) * fLevel );
                     }else{
                         tailOff = 0.0;
                         clearCurrentNote();
@@ -118,7 +119,7 @@ public:
     }
 
 private:
-    float fLevel;
+    float fLevel, fPan;
     double level, tailOff;
     Fyp_samplerPrototype2AudioProcessor* p;
     DrumSound* drumSound;

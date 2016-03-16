@@ -25,6 +25,8 @@
 #include "PluginProcessor.h"
 //[/Headers]
 
+
+
 //==============================================================================
 /**
                                                                     //[Comments]
@@ -43,16 +45,22 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    float getSliderValue(int sliderID)
+    {
+        return kickFader->getValue();
+    }
+    float getPan(int pannerID)
+    {
+        return kickPan->getValue();
+    }
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
     void sliderValueChanged (Slider* sliderThatWasMoved) override;
-    
-    float getSliderValue(){
-        return kickFader->getValue();
-    }
-    
+
+
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     //[/UserVariables]
@@ -61,8 +69,8 @@ private:
     ScopedPointer<Slider> kickFader;
     ScopedPointer<Slider> KickPan;
     ScopedPointer<Slider> KickVU;
-    
-    Fyp_samplerPrototype2AudioProcessor* processor;
+    ScopedPointer<Slider> kickPan;
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MixerComponent)

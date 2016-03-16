@@ -35,9 +35,12 @@ public:
 
     float getSliderValue()
     {
-        return mixer.getSliderValue();
+        return mixer.getSliderValue(0);
     }
-    
+    float getPanLevel()
+    {
+        return mixer.getPan(0);
+    }
 private:
     TextButton kickButton;
     int lastInputIndex;

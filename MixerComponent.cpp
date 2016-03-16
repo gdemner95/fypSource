@@ -22,6 +22,7 @@
 
 #include "MixerComponent.h"
 
+
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
@@ -44,7 +45,9 @@ MixerComponent::MixerComponent ()
     KickPan->setRange (-64, 64, 1);
     KickPan->setSliderStyle (Slider::Rotary);
     KickPan->setTextBoxStyle (Slider::TextBoxAbove, false, 30, 20);
-    KickPan->setColour (Slider::rotarySliderFillColourId, Colours::red);
+    KickPan->setColour (Slider::thumbColourId, Colour (0x000000ff));
+    KickPan->setColour (Slider::trackColourId, Colours::grey);
+    KickPan->setColour (Slider::rotarySliderFillColourId, Colour (0x00ff0000));
     KickPan->setColour (Slider::textBoxBackgroundColourId, Colour (0xff565656));
     KickPan->addListener (this);
 
@@ -58,8 +61,19 @@ MixerComponent::MixerComponent ()
     KickVU->addListener (this);
     KickVU->setSkewFactor (2);
 
-    processor = processor->getProcessor();
-    
+    addAndMakeVisible (kickPan = new Slider ("kickPan"));
+    kickPan->setTooltip (TRANS("Panning"));
+    kickPan->setRange (0, 1, 0.1);
+    kickPan->setSliderStyle (Slider::LinearHorizontal);
+    kickPan->setTextBoxStyle (Slider::NoTextBox, true, 80, 20);
+    kickPan->setColour (Slider::backgroundColourId, Colour (0x00000000));
+    kickPan->setColour (Slider::thumbColourId, Colours::red);
+    kickPan->setColour (Slider::trackColourId, Colours::grey);
+    kickPan->setColour (Slider::rotarySliderFillColourId, Colour (0x00000000));
+    kickPan->setColour (Slider::rotarySliderOutlineColourId, Colours::grey);
+    kickPan->addListener (this);
+
+
     //[UserPreSize]
     //[/UserPreSize]
 
@@ -78,6 +92,7 @@ MixerComponent::~MixerComponent()
     kickFader = nullptr;
     KickPan = nullptr;
     KickVU = nullptr;
+    kickPan = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -102,8 +117,9 @@ void MixerComponent::resized()
     //[/UserPreResize]
 
     kickFader->setBounds (40, 408, 40, 168);
-    KickPan->setBounds (32, 328, 64, 72);
+    KickPan->setBounds (144, 256, 64, 72);
     KickVU->setBounds (40, 416, 8, 128);
+    kickPan->setBounds (24, 376, 64, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -115,8 +131,6 @@ void MixerComponent::sliderValueChanged (Slider* sliderThatWasMoved)
 
     if (sliderThatWasMoved == kickFader)
     {
-//        processor->setSliderValue(1.0);
-        
         //[UserSliderCode_kickFader] -- add your slider handling code here..
         //[/UserSliderCode_kickFader]
     }
@@ -129,6 +143,11 @@ void MixerComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_KickVU] -- add your slider handling code here..
         //[/UserSliderCode_KickVU]
+    }
+    else if (sliderThatWasMoved == kickPan)
+    {
+        //[UserSliderCode_kickPan] -- add your slider handling code here..
+        //[/UserSliderCode_kickPan]
     }
 
     //[UsersliderValueChanged_Post]
@@ -161,15 +180,21 @@ BEGIN_JUCER_METADATA
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="40" textBoxHeight="20" skewFactor="2"/>
   <SLIDER name="KickPan" id="4924464354e2c5dd" memberName="KickPan" virtualName=""
-          explicitFocusOrder="0" pos="32 328 64 72" rotarysliderfill="ffff0000"
-          textboxbkgd="ff565656" min="-64" max="64" int="1" style="Rotary"
-          textBoxPos="TextBoxAbove" textBoxEditable="1" textBoxWidth="30"
-          textBoxHeight="20" skewFactor="1"/>
+          explicitFocusOrder="0" pos="144 256 64 72" thumbcol="ff" trackcol="ff808080"
+          rotarysliderfill="ff0000" textboxbkgd="ff565656" min="-64" max="64"
+          int="1" style="Rotary" textBoxPos="TextBoxAbove" textBoxEditable="1"
+          textBoxWidth="30" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="KickVU" id="9a686490ce1a9075" memberName="KickVU" virtualName=""
           explicitFocusOrder="0" pos="40 416 8 128" thumbcol="ffff0000"
           trackcol="ff808080" rotarysliderfill="ffff0000" min="0" max="10"
           int="0" style="LinearBar" textBoxPos="NoTextBox" textBoxEditable="0"
           textBoxWidth="80" textBoxHeight="20" skewFactor="2"/>
+  <SLIDER name="kickPan" id="fe9ca562b73f9942" memberName="kickPan" virtualName=""
+          explicitFocusOrder="0" pos="24 376 64 24" tooltip="Panning" bkgcol="0"
+          thumbcol="ffff0000" trackcol="ff808080" rotarysliderfill="0"
+          rotaryslideroutline="ff808080" min="-64" max="64" int="1" style="LinearHorizontal"
+          textBoxPos="NoTextBox" textBoxEditable="0" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
