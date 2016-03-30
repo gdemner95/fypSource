@@ -21,6 +21,11 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
     level = velocity;
     //        vel = velocity;
     
+    //is it muted?
+    //is it soloed?
+    
+    
+    
     /** Get level values */
     fLevel = editor->getSliderValue(drumSound->getID());
 
