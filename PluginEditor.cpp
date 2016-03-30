@@ -14,13 +14,26 @@
 
 //==============================================================================
 Fyp_samplerPrototype2AudioProcessorEditor::Fyp_samplerPrototype2AudioProcessorEditor (Fyp_samplerPrototype2AudioProcessor& p)
-: AudioProcessorEditor (&p), processor (p)
+: AudioProcessorEditor (&p), tabBar(TabbedButtonBar::TabsAtTop), processor (p)
 {
-    
-    setSize(600, 600);
+    mixer = new MixerComponent();
+    seqComp = new SequencerComponent();
+    mainGUI = new SamplerGUI();
+    setSize(1200, 800);
+    Rectangle<int> local;
+    local = getLocalBounds();
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    addAndMakeVisible(mixer);
+    addAndMakeVisible(&tabBar);
+    tabBar.setSize(local.getWidth(), 800);
+    tabBar.addTab("Mixer", Colours::slategrey, mixer, false, 0);
+
+    tabBar.addTab("Grooves", Colours::slategrey, seqComp, false, 1);
+
+    tabBar.addTab("KeyMapping", Colours::slategrey, mainGUI, false, 2);
+    
+    
+    setDef();
 }
 
 Fyp_samplerPrototype2AudioProcessorEditor::~Fyp_samplerPrototype2AudioProcessorEditor()
@@ -34,14 +47,13 @@ void Fyp_samplerPrototype2AudioProcessorEditor::paint (Graphics& g)
     g.fillAll (Colours::slategrey);
     g.setColour (Colours::black);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
 }
 
 void Fyp_samplerPrototype2AudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    mixer.setBounds(getLocalBounds());
+    mixer->setBounds(getLocalBounds());
     kickButton.setBounds (10, 10, getWidth() - 20, 20);
 }
 void Fyp_samplerPrototype2AudioProcessorEditor::buttonClicked(Button* button)

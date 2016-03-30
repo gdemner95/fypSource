@@ -16,6 +16,7 @@
 #include "DrumSynthAudioSource.h"
 #include "SamplerGUI.h"
 #include "MixerComponent.h"
+#include "SequencerComponent.h"
 
 
 //==============================================================================
@@ -33,19 +34,25 @@ public:
     
     void buttonClicked(Button* button) override;
 
-    float getSliderValue()
+    float getSliderValue(int sliderID)
     {
-        return mixer.getSliderValue(0);
+        return mixer->getSliderValue(sliderID);
     }
-    float getPanLevel()
+    float getPanLevel(int pannerID)
     {
-        return mixer.getPan(0);
+        return mixer->getPan(pannerID);
+    }
+    void setDef()
+    {
+        mixer->setDefaults();
     }
 private:
     TextButton kickButton;
     int lastInputIndex;
-    MixerComponent mixer;
-    
+    MixerComponent *mixer;
+    SamplerGUI *mainGUI;
+    SequencerComponent *seqComp;
+    TabbedComponent tabBar;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     Fyp_samplerPrototype2AudioProcessor& processor;

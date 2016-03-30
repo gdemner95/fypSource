@@ -11,9 +11,7 @@
 #ifndef STRINGS_H_INCLUDED
 #define STRINGS_H_INCLUDED
 
-
-
-const char* fileName[19] = {
+const char* fileName[] = {
     "Bass Drum In ",
     "Bass Drum Out ",
     "Snare Up ",
@@ -24,15 +22,12 @@ const char* fileName[19] = {
     "Hats Closed Tip ",
     "Hats Closed Shaft ",
     "Hats Rock Sizzle ",
-    "Hats Tight Sizzle ",
     "Hats Open ",
     "Hats Pedal ",
     "Ride Tip ",
     "Ride Bell ",
     "Splash Crash ",
-    "Crash Crash ",
-    "Crash Bell ",
-    "Crash Tip "
+    "Crash Crash "
 };
 const char* velocityIndex[6]{
     "1_",

@@ -32,16 +32,16 @@ public:
         return dynamic_cast<DrumSound*>(sound) != nullptr;
     };
     
-
+    
     
     void pitchWheelMoved (int newPitchWheelValue) override {}
     void controllerMoved (int controllerNumber, int newControllerValue) override {}
     void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) override;
-
+    
     
     void stopNote(float velocity, bool allowTailOff) override{
-//        clearCurrentNote();
-//        currentDrumBuffer = nullptr;
+        //        clearCurrentNote();
+        //        currentDrumBuffer = nullptr;
         allowTailOff = true;
         if (allowTailOff)
         {
@@ -51,8 +51,7 @@ public:
         else
         {
             clearCurrentNote();
-                    currentDrumBuffer = nullptr;
-
+            currentDrumBuffer = nullptr;
         }
         
     }
@@ -61,63 +60,41 @@ public:
     {
         if (currentDrumBuffer == nullptr)
             return;
-
-        const AudioSampleBuffer& currentSound = *currentDrumBuffer;
         
-//        if(tailOff > 0.0){
-//            while(--numSamples >= 0){
-//                
-//                if (positionInBuffer >= currentSound.getNumSamples())
-//                {
-//                    clearCurrentNote();
-//                    currentDrumBuffer = nullptr;
-//                    break;
-//                }
-//                
-//                if (tailOff <= 0.005)
-//                {
-//                    clearCurrentNote();
-//                    currentDrumBuffer = nullptr;
-//                    break;
-//                }
-//                
-//                for(int i = outputBuffer.getNumChannels(); --i >= 0;)
-//                {
-//                    const float sampleValue = (currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer) * tailOff);
-//                    outputBuffer.addSample (i, startSample, sampleValue);
-//                }
-//                
-//                startSample++;
-//                positionInBuffer++;
-////                tailOff *= 0.99999;
-//            }
-//        }
-//        else
-//        {
-            while( --numSamples >= 0)
-            {
-                for(int i = outputBuffer.getNumChannels(); --i >= 0;)
-                {
-                    //return value from the slider in the mixer and apply it to sample value
+        const AudioSampleBuffer& currentSound = *currentDrumBuffer;
 
-                    if(positionInBuffer < currentSound.getNumSamples()){
-                        const float sampleValue = currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer);
-                        
-                        outputBuffer.addSample (i, startSample, (sampleValue * fabs(i - fPan)) * fLevel );
-                    }else{
-                        tailOff = 0.0;
-                        clearCurrentNote();
-                        currentDrumBuffer = nullptr;
-                        break;
+        while( --numSamples >= 0)
+        {
+            for(int i = outputBuffer.getNumChannels(); --i >= 0;)
+            {
+                if(positionInBuffer < currentSound.getNumSamples())
+                {
+                    const float sampleValue = currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer);
+                    switch(i)
+                    {
+                        case 0:
+                            outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * (1 - fPan));
+                            break;
+                        case 1:
+                            outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * fPan);
+                            break;
                     }
                 }
-                
-                startSample++;
-                positionInBuffer++;
+                else
+                {
+                    tailOff = 0.0;
+                    clearCurrentNote();
+                    currentDrumBuffer = nullptr;
+                    break;
+                }
             }
-//        }
+            
+            startSample++;
+            positionInBuffer++;
+        }
+        //        }
     }
-
+    
 private:
     float fLevel, fPan;
     double level, tailOff;
@@ -127,7 +104,5 @@ private:
     int positionInBuffer;
     
 };
-
-
 
 #endif  // DRUMSYNTHVOICE_H_INCLUDED

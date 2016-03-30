@@ -22,11 +22,12 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
     //        vel = velocity;
     
     /** Get level values */
-    fLevel = editor->getSliderValue();
+    fLevel = editor->getSliderValue(drumSound->getID());
 
     /** Get panning values */
-    fPan = editor->getPanLevel();
-    
+    fPan = editor->getPanLevel(drumSound->getID());
+    printf("Pan 0 = %f\n",fPan);
+
     printf("Level = %f\n",fLevel);
     tailOff = 0.0;
 }

@@ -68,12 +68,12 @@ struct Drum
 class DrumSound : public SynthesiserSound
 {
 public:
-    DrumSound (int note, int channel, int fileNameIndex, int micIndex);
+    DrumSound (int note, int channel, int fileNameIndex, int micIndex, int ID);
     virtual ~DrumSound() { }
 
     bool appliesToNote (int midiNoteNumber);
     bool appliesToChannel (int midiChannel);
-    
+    int getID();
     //applies to slider?
     
     AudioSampleBuffer* getBufferForVelocity (float velocity);
@@ -85,6 +85,7 @@ public:
 private:
     int note;
     int channel;
+    int ID;
     Drum buffer;
 };
 

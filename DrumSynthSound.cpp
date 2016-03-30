@@ -11,8 +11,8 @@
 #include "DrumSynthSound.h"
 #include "Strings.h"
 
-DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex)
-:   note (n), channel (c)
+DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex, int ID)
+:   note (n), channel (c), ID(ID)
 {
     File localDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getChildFile ("Resources");
     
@@ -23,7 +23,7 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex)
     char charBuffer[128] = { 0 };
     if(micIndex == 9)
     {
-        for (int v = 5; v < 6; v++)
+        for (int v = 0; v < 6; v++)
         {
             for (int s = 0; s < 6; s++)
             {
@@ -41,17 +41,19 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex)
                                     true,
                                     true);
                 
-                printf("sounds added: %s to %d_%d_%d \n", charBuffer, 0 ,v ,s);
+//                printf("sounds added: %s to %d_%d_%d \n", charBuffer, 0 ,v ,s);
             }
         }
     }
     else
     {
-        for (int v = 5; v < 6; v++)
+        if(fileNameIndex == 10 || fileNameIndex == 11 || fileNameIndex == 13)
+        {
+        for (int v = 0; v < 6; v++)
         {
             for (int s = 0; s < 6; s++)
             {
-                sprintf(charBuffer, "%s%s%s%s", fileName[fileNameIndex], cymbalMics[micIndex], velocityIndex[v], stringEnd[s] );
+                sprintf(charBuffer, "%s%s%s%s", fileName[fileNameIndex], cymbalMics[micIndex], velocityIndex[5], stringEnd[s] );
                 
                 File tempFile = localDir.getChildFile(charBuffer);
                 
@@ -65,8 +67,35 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex)
                                     true,
                                     true);
                 
-                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
+//                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
             }
+        }
+        }
+        else
+        {
+            for (int v = 0; v < 6; v++)
+            {
+                for (int s = 0; s < 6; s++)
+                {
+                    sprintf(charBuffer, "%s%s%s%s", fileName[fileNameIndex], cymbalMics[micIndex], velocityIndex[v], stringEnd[s] );
+                    
+                    File tempFile = localDir.getChildFile(charBuffer);
+                    
+                    drumReader[s] = formatManager.createReaderFor(tempFile);
+                    
+                    buffer.velocities[v].samples[s].setSize(drumReader[s]->numChannels, drumReader[s]->lengthInSamples);
+                    drumReader[s]->read(&buffer.velocities[v].samples[s],
+                                        0,
+                                        drumReader[s]->lengthInSamples,
+                                        0,
+                                        true,
+                                        true);
+                    
+                    //                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
+                }
+            }
+
+            
         }
     }
 }
@@ -89,5 +118,8 @@ AudioSampleBuffer* DrumSound::getBufferForVelocity (float velocity)
     // choose one of these and return a pointer to it..
     jassertfalse;
 }
-
+int DrumSound::getID()
+{
+    return ID;
+}
 
