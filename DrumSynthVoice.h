@@ -15,6 +15,7 @@
 #include "MixerComponent.h"
 #include "DrumSynthSound.h"
 #include "PluginProcessor.h"
+#include "noteHandling.h"
 class DrumSynthVoice : public SynthesiserVoice
 {
 public:
@@ -30,18 +31,30 @@ public:
     bool canPlaySound(SynthesiserSound* sound) override {
         
         return dynamic_cast<DrumSound*>(sound) != nullptr;
-    };
+    }
     
-    
+    void setPlayingHiHat(int noteNumber){
+        if (noteNumber == 54 || noteNumber == 56 || noteNumber == 58 || noteNumber == 47)
+        {
+             isHiHat = true;
+        }
+
+    }
+    bool getPlayingHiHat()
+    {
+        if(isHiHat)
+            return true;
+        else
+            return false;
+    }
     
     void pitchWheelMoved (int newPitchWheelValue) override {}
     void controllerMoved (int controllerNumber, int newControllerValue) override {}
     void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) override;
     
     
-    void stopNote(float velocity, bool allowTailOff) override{
-        //        clearCurrentNote();
-        //        currentDrumBuffer = nullptr;
+    void stopNote(float velocity, bool allowTailOff) override
+    {
         allowTailOff = true;
         if (allowTailOff)
         {
@@ -53,51 +66,21 @@ public:
             clearCurrentNote();
             currentDrumBuffer = nullptr;
         }
-        
+        if(velocity == 1){
+            clearCurrentNote();
+            currentDrumBuffer = nullptr;
+        }
     }
     
-    void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override
-    {
-        if (currentDrumBuffer == nullptr)
-            return;
-        
-        const AudioSampleBuffer& currentSound = *currentDrumBuffer;
-
-        while( --numSamples >= 0)
-        {
-            for(int i = outputBuffer.getNumChannels(); --i >= 0;)
-            {
-                if(positionInBuffer < currentSound.getNumSamples())
-                {
-                    const float sampleValue = currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer);
-                    switch(i)
-                    {
-                        case 0:
-                            outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * (1 - fPan));
-                            break;
-                        case 1:
-                            outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * fPan);
-                            break;
-                    }
-                }
-                else
-                {
-                    tailOff = 0.0;
-                    clearCurrentNote();
-                    currentDrumBuffer = nullptr;
-                    break;
-                }
-            }
-            
-            startSample++;
-            positionInBuffer++;
-        }
-        //        }
-    }
+    void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
+    
     
 private:
     float fLevel, fPan;
     double level, tailOff;
+    bool isHiHat;
+    int check;
+    ScopedPointer<noteHandler> noteHandle;
     Fyp_samplerPrototype2AudioProcessor* p;
     DrumSound* drumSound;
     AudioSampleBuffer* currentDrumBuffer;

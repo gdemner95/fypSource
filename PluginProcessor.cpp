@@ -10,7 +10,6 @@
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "DrumSynthAudioSource.h"
 #include "DrumSynthSound.h"
 #include "DrumSynthVoice.h"
 
@@ -22,6 +21,9 @@ Fyp_samplerPrototype2AudioProcessor::Fyp_samplerPrototype2AudioProcessor()
     for(int i = 0; i < 32; i++){
         synth.addVoice(new DrumSynthVoice(this));
     }
+    
+//    noteHandler();
+    
     //- Will use loops to do this, for now just leaving it like this for clarity of what is actually happening
     
     /** Applying all the sounds */
@@ -88,6 +90,7 @@ Fyp_samplerPrototype2AudioProcessor::Fyp_samplerPrototype2AudioProcessor()
     synth.addSound(new DrumSound(66, 0, 14, 2, 12));/** Hats Closed OH R */
     synth.addSound(new DrumSound(66, 0, 14, 3, 13));/** Hats Closed Room L */
     synth.addSound(new DrumSound(66, 0, 14, 4, 13));/** Hats Closed Room R */
+    
     createEditor();
 }
 
@@ -192,7 +195,7 @@ void Fyp_samplerPrototype2AudioProcessor::releaseResources()
 
 void Fyp_samplerPrototype2AudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-
+    
     for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     

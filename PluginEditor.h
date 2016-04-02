@@ -13,7 +13,6 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "DrumSynthAudioSource.h"
 #include "SamplerGUI.h"
 #include "MixerComponent.h"
 #include "SequencerComponent.h"
