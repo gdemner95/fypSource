@@ -41,7 +41,6 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
     positionInBuffer = 0;
     level = velocity;
     
-    
     //is it muted?
     //is it soloed?
     
