@@ -66,7 +66,7 @@ ChannelStrip::ChannelStrip ()
     addAndMakeVisible(meter = new Slider("meter"));
     meter->setSliderStyle(Slider::LinearBarVertical);
     meter->setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    meter->setBounds(5], 20, 20, 130);
+    meter->setBounds(5, 20, 20, 130);
     meter->setRange (0, 1, 0.001);
     meter->setColour (Slider::thumbColourId, Colours::red);
     meter->setColour (Slider::trackColourId, Colours::grey);
