@@ -64,6 +64,7 @@ SequencerComponent::SequencerComponent ()
 
 
     //[Constructor] You can add your own custom stuff here..
+
     //[/Constructor]
 }
 
@@ -123,9 +124,8 @@ void SequencerComponent::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == textButton)
     {
         //[UserButtonCode_textButton] -- add your button handler code here..
-        midiMessage.addEvent(MidiMessage::noteOn(1, 48, (uint8)127), 0);
+        midiMessage.addEvent(MidiMessage::noteOn(0, 48, (uint8)127), 0);
         printf("Trigger\n");
-//        (MidiMessage::noteOn(0, 48, 127));
         //[/UserButtonCode_textButton]
     }
     else if (buttonThatWasClicked == textButton2)
@@ -171,6 +171,11 @@ void SequencerComponent::buttonClicked (Button* buttonThatWasClicked)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void SequencerComponent::timerCallback()
+{
+    printf("tick");
+}
+
 //[/MiscUserCode]
 
 

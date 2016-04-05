@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_C34AFA0F3DA5EA4__
-#define __JUCE_HEADER_C34AFA0F3DA5EA4__
+#ifndef __JUCE_HEADER_DBD2159E47CBB1D6__
+#define __JUCE_HEADER_DBD2159E47CBB1D6__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -34,46 +34,44 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class SequencerComponent  : public Component,
-                            public ButtonListener,
-                            public Timer
+class ChannelStrip  : public Component, public ButtonListener, public SliderListener
 {
 public:
     //==============================================================================
-    SequencerComponent ();
-    ~SequencerComponent();
+    ChannelStrip ();
+    ~ChannelStrip();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void timerCallback() override;
+    void sliderValueChanged (Slider* sliderThatWasMoved) override;
+    void buttonClicked (Button* buttonThatWasClicked) override;
+    void setMeter(float input);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
-    void buttonClicked (Button* buttonThatWasClicked) override;
+
+
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    MidiBuffer midiMessage;
-    Array<ScopedPointer<TextButton>> kickButton;
+    ScopedPointer<Slider> fader;
+    ScopedPointer<Slider> meter;
+    ScopedPointer<Slider> panner;
+    
+    float faderValue;
+    float pannerValue;
     
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<TextButton> textButton;
-    ScopedPointer<TextButton> textButton2;
-    ScopedPointer<TextButton> textButton3;
-    ScopedPointer<TextButton> textButton4;
-    ScopedPointer<TextButton> textButton5;
-    ScopedPointer<TextButton> textButton6;
-    ScopedPointer<TextButton> textButton7;
-    ScopedPointer<TextButton> textButton8;
 
-    Timer *timer;
+
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SequencerComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ChannelStrip)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_C34AFA0F3DA5EA4__
+#endif   // __JUCE_HEADER_DBD2159E47CBB1D6__

@@ -23,6 +23,8 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
+//#include "Strings.h"
+#include "ChannelStrip.h"
 //[/Headers]
 
 
@@ -57,6 +59,8 @@ public:
         int index = ids.indexOf(pannerID);
         if(panners[index] != nullptr)
             return panners[index]->getValue();
+        else
+            return 0;
     }
     void setDefaults(){
         for (int i = 0; i <= 13; i++)
@@ -79,7 +83,14 @@ private:
     Array<Slider*>  sliders;
     Array<Slider*>  panners;
     Array<int>      ids;
-
+    
+    Array<Slider*> mySliders;
+    Array<TextEditor*> myTextBoxes;
+    ScopedPointer<Slider> tempSlider;
+    
+    Array<ChannelStrip*> channelStrips;
+    ScopedPointer<ChannelStrip> tempStrip;
+    
     //[/UserVariables]
 
     //==============================================================================
@@ -139,6 +150,7 @@ private:
     ScopedPointer<TextButton> chinaButton3;
 
 
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MixerComponent)
 };

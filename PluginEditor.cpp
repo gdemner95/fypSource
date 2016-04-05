@@ -58,5 +58,8 @@ void Fyp_samplerPrototype2AudioProcessorEditor::resized()
 }
 void Fyp_samplerPrototype2AudioProcessorEditor::buttonClicked(Button* button)
 {
-    
+    if (button == loadButton)
+    {
+        
+    }
 }

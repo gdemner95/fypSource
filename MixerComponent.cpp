@@ -543,6 +543,27 @@ MixerComponent::MixerComponent ()
 
 
     //[UserPreSize]
+//        for (int i = 0; i < 16; i++)
+//        {
+//            mySliders.add(new Slider("Slider"));
+//            mySliders[i]->setSliderStyle(Slider::LinearVertical);
+//            mySliders[i]->setTextBoxStyle(Slider::TextBoxBelow, false, 40, 20);
+//            mySliders[i]->setBounds((i + 1) * 30, 20, 40, 160);
+//            ohFader->setRange (0, 1, 0.1);
+//            mySliders[i]->setColour (Slider::thumbColourId, Colours::red);
+//            mySliders[i]->setColour (Slider::trackColourId, Colours::grey);
+//            addAndMakeVisible(mySliders[i]);
+//        }
+    for (int i = 0; i < 16; i++)
+    {
+        channelStrips.add(new ChannelStrip());
+        channelStrips[i]->setBounds(i * 60, 0, 60, 200);
+        addAndMakeVisible(channelStrips[i]);
+    }
+//    addAndMakeVisible(strip1 = new ChannelStrip());
+//    strip1->setBounds(0, 0, 60, 200);
+    
+    
     sliders.add(kickInFader);
     panners.add(kickInPan);
     ids.add(0);
@@ -597,12 +618,27 @@ MixerComponent::MixerComponent ()
     sliders.add(roomFader);
     ids.add(13);
 
+//    for (int i = 0; i < 16; i++)
+//    {
+//        mySliders[i]->setSliderStyle(Slider::LinearVertical);
+//        addAndMakeVisible(mySliders[i]);
+//        
+//    }
+    
+    
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
+
+    
+    
+    
+    KickOutVU->setSliderStyle (Slider::LinearBarVertical);
+
+    
     //[/Constructor]
 }
 
@@ -742,13 +778,31 @@ void MixerComponent::resized()
     roomFader->setBounds (885, 410, 40, 160);
     KickOutVU13->setBounds (880, 415, 10, 130);
     chinaButton3->setBounds (880, 575, 50, 50);
+    
+    
+    
     //[UserResized] Add your own custom resize handling here..
+    
+//    for (int i = 0; i < 16; i++)
+//    {
+//        mySliders[i]->setBounds((i+1) * 20, 20, 40, 160);
+//        
+//    }
+    
     //[/UserResized]
 }
 
 void MixerComponent::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
+    for (int i = 0; i < 16; i++)
+    {
+//        if (sliderThatWasMoved == mySliders.getUnchecked(i))
+//        {
+//            //send the value or something
+//            break;
+//        }
+    }
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == kickInFader)

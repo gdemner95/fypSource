@@ -52,6 +52,7 @@ private:
     SamplerGUI *mainGUI;
     SequencerComponent *seqComp;
     TabbedComponent tabBar;
+    ScopedPointer<TextButton> loadButton;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     Fyp_samplerPrototype2AudioProcessor& processor;
