@@ -14,7 +14,8 @@
 void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition)
 {
     setPlayingHiHat(midiNoteNumber);
-    
+    if(isHiHat)
+    {
     for (int i = 0; i < 32; i++)
     {
         DrumSynthVoice* tempVoice = static_cast<DrumSynthVoice*> (p->synth.getVoice(i));
@@ -32,7 +33,9 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
             }
         }
     }
+    }
     
+    printf("VOICE");
     jassert (dynamic_cast<DrumSound*> (sound) != nullptr);
     DrumSound* drumSound = static_cast<DrumSound*> (sound);
     

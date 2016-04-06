@@ -30,7 +30,7 @@
 ChannelStrip::ChannelStrip ()
 {
     //[Constructor_pre] You can add your own custom stuff here..
-    
+
     //[/Constructor_pre]
 
 
@@ -41,18 +41,18 @@ ChannelStrip::ChannelStrip ()
 
 
     //[Constructor] You can add your own custom stuff here..
-    
-    setSize(50, 180);
-    
+
+    setSize(60, 180);
+
     addAndMakeVisible(fader = new Slider("Fader"));
     fader->setSliderStyle(Slider::LinearVertical);
     fader->setTextBoxStyle(Slider::TextBoxBelow, false, 40, 20);
-    fader->setBounds(15, 20, 50, 160);
+    fader->setBounds(15, 25, 50, 160);
     fader->setRange (0, 1, 0.1);
     fader->setColour (Slider::thumbColourId, Colours::red);
     fader->setColour (Slider::trackColourId, Colours::grey);
     fader->addListener(this);
-    
+
     addAndMakeVisible(panner = new Slider("Panner"));
     panner->setSliderStyle(Slider::LinearHorizontal);
     panner->setTextBoxStyle(Slider::NoTextBox, false, 40, 20);
@@ -61,8 +61,8 @@ ChannelStrip::ChannelStrip ()
     panner->setColour (Slider::thumbColourId, Colours::red);
     panner->setColour (Slider::trackColourId, Colours::grey);
     panner->addListener(this);
-    
-    
+
+
     addAndMakeVisible(meter = new Slider("meter"));
     meter->setSliderStyle(Slider::LinearBarVertical);
     meter->setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
@@ -72,10 +72,7 @@ ChannelStrip::ChannelStrip ()
     meter->setColour (Slider::trackColourId, Colours::grey);
     meter->setEnabled(false);
     meter->addListener(this);
-    
-    
-    
-    
+
     //[/Constructor]
 }
 
@@ -90,7 +87,7 @@ ChannelStrip::~ChannelStrip()
     fader = nullptr;
     panner = nullptr;
     meter = nullptr;
-    
+
     //[/Destructor]
 }
 
@@ -100,9 +97,10 @@ void ChannelStrip::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colours::slategrey);
+    g.fillAll (Colours::white);
 
     //[UserPaint] Add your own custom painting code here..
+    g.fillAll(Colours::grey);
     //[/UserPaint]
 }
 
@@ -128,20 +126,34 @@ void ChannelStrip::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         pannerValue = panner->getValue();
     }
-    
+
 }
 void ChannelStrip::buttonClicked (Button* buttonThatWasClicked)
 {
-    
+
 }
 void ChannelStrip::setMeter(float input)
 {
     //level = 20 * Log (input / 1);
     float dbV = 20 * log(input / 1.0);
-    meter->setValue(dbV);
+    meter->setValue(dbV, dontSendNotification);
 }
-
-
+float ChannelStrip::getFaderValue()
+{
+    return faderValue;
+}
+void ChannelStrip::setPan(float value)
+{
+    panner->setValue(value);
+}
+void ChannelStrip::setFader(float value)
+{
+    fader->setValue(value);
+}
+float ChannelStrip::getPan()
+{
+    return pannerValue;
+}
 //[/MiscUserCode]
 
 

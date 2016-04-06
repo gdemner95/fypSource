@@ -46,7 +46,6 @@ public:
         mixer->setDefaults();
     }
 private:
-    TextButton kickButton;
     int lastInputIndex;
     MixerComponent *mixer;
     SamplerGUI *mainGUI;

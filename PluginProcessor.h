@@ -71,9 +71,10 @@ public:
         return this;
     }
     Synthesiser synth;
-
+    void loadSounds();
 
 private:
+    bool soundsLoaded;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Fyp_samplerPrototype2AudioProcessor)
 };

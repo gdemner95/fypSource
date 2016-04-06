@@ -34,7 +34,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class ChannelStrip  : public Component, public ButtonListener, public SliderListener
+class ChannelStrip  : public Component
 {
 public:
     //==============================================================================
@@ -45,7 +45,13 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void sliderValueChanged (Slider* sliderThatWasMoved) override;
     void buttonClicked (Button* buttonThatWasClicked) override;
+
+    float getFaderValue();
+    float getPan();
+    void setPan(float value);
+    void setFader(float value);
     void setMeter(float input);
+
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -55,13 +61,13 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    ScopedPointer<Slider> fader;
-    ScopedPointer<Slider> meter;
-    ScopedPointer<Slider> panner;
-    
+    Slider* fader;
+    Slider* meter;
+    Slider* panner;
+
     float faderValue;
     float pannerValue;
-    
+    int ID;
     //[/UserVariables]
 
     //==============================================================================

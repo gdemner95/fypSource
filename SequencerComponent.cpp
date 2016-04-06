@@ -124,8 +124,8 @@ void SequencerComponent::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == textButton)
     {
         //[UserButtonCode_textButton] -- add your button handler code here..
-        midiMessage.addEvent(MidiMessage::noteOn(0, 48, (uint8)127), 0);
-        printf("Trigger\n");
+//        midiMessage.addEvent(MidiMessage::noteOn(0, 48, (uint8)127), 0);
+//        printf("Trigger\n");
         //[/UserButtonCode_textButton]
     }
     else if (buttonThatWasClicked == textButton2)
