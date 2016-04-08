@@ -19,7 +19,7 @@ Fyp_samplerPrototype2AudioProcessorEditor::Fyp_samplerPrototype2AudioProcessorEd
     mixer = new MixerComponent();
     seqComp = new SequencerComponent();
     mainGUI = new SamplerGUI();
-    setSize(1000, 800);
+    setSize(980, 260);
     Rectangle<int> local;
     local = getLocalBounds();
     // Make sure that before the constructor has finished, you've set the
@@ -33,13 +33,17 @@ Fyp_samplerPrototype2AudioProcessorEditor::Fyp_samplerPrototype2AudioProcessorEd
     tabBar.addTab("KeyMapping", Colours::slategrey, mainGUI, false, 2);
     addAndMakeVisible(loadButton = new TextButton("Load Samples!"));
     loadButton->addListener(this);
-    loadButton->setBounds(0, 0, 200, 200);
+    loadButton->setBounds(0, 240, local.getWidth(), 20);
+    loadButton->setColour(0x1000100, Colours::red);
     setDef();
 }
 
 Fyp_samplerPrototype2AudioProcessorEditor::~Fyp_samplerPrototype2AudioProcessorEditor()
 {
-    
+//    for(int i = 0; i < 14; i++)
+//    {
+//        sliderValues.add(mixer->getSliderValue(i));
+//    }
 }
 
 //==============================================================================
@@ -60,6 +64,12 @@ void Fyp_samplerPrototype2AudioProcessorEditor::buttonClicked(Button* button)
 {
     if (button == loadButton)
     {
-        processor.loadSounds();
+        loadButton->setColour(0x1000100, Colours::yellow);
+//        processor.loadSounds();
+//setInterceptClicks to false false for non interactable sliders
+//        startTimer();
+        processor.initiateSoundLoadingThread();
+        
+        loadButton->setColour(0x1000100, Colours::green);
     }
 }

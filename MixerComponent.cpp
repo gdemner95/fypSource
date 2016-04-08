@@ -36,10 +36,10 @@ MixerComponent::MixerComponent ()
     //[UserPreSize]
     Rectangle<int> local;
     local = getLocalBounds();
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 14; i++)
     {
         channelStrips.add(new ChannelStrip(i));
-        channelStrips[i]->setBounds(i * 70, 400, 70, 200);
+        channelStrips[i]->setBounds(i * 70, local.getBottom(), 70, 220);
         addAndMakeVisible(channelStrips[i]);
     }
 
@@ -49,6 +49,7 @@ MixerComponent::MixerComponent ()
 
 
     //[Constructor] You can add your own custom stuff here..
+    setSize(980, 220);
     //[/Constructor]
 }
 

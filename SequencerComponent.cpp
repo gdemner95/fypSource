@@ -173,7 +173,7 @@ void SequencerComponent::buttonClicked (Button* buttonThatWasClicked)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void SequencerComponent::timerCallback()
 {
-    printf("tick");
+
 }
 
 //[/MiscUserCode]

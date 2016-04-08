@@ -35,8 +35,7 @@
                                                                     //[/Comments]
 */
 class SequencerComponent  : public Component,
-                            public ButtonListener,
-                            public Timer
+                            public ButtonListener, public Timer
 {
 public:
     //==============================================================================
@@ -51,11 +50,14 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
     void buttonClicked (Button* buttonThatWasClicked) override;
+
+
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     MidiBuffer midiMessage;
     Array<ScopedPointer<TextButton>> kickButton;
-    
+
     //[/UserVariables]
 
     //==============================================================================
@@ -68,7 +70,7 @@ private:
     ScopedPointer<TextButton> textButton7;
     ScopedPointer<TextButton> textButton8;
 
-    Timer *timer;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SequencerComponent)
 };

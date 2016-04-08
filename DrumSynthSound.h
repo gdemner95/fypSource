@@ -27,10 +27,10 @@ struct VelRange
         2,
         1,
     };
-
+    
     AudioSampleBuffer* getNextSample(){
         int chosen = randomNumbers[rand() % 10];
-//        printf("chosen sample: %d", chosen);
+        //        printf("chosen sample: %d", chosen);
         return &samples[chosen];
     };
     AudioSampleBuffer samples[6];
@@ -61,7 +61,7 @@ struct Drum
             return &velocities[5];
         }
     }
-
+    
     VelRange velocities[6];
 };
 
@@ -70,22 +70,39 @@ class DrumSound : public SynthesiserSound
 public:
     DrumSound (int note, int channel, int fileNameIndex, int micIndex, int ID);
     virtual ~DrumSound() { }
-
+    
     bool appliesToNote (int midiNoteNumber);
     bool appliesToChannel (int midiChannel);
     int getID();
     //applies to slider?
     
     AudioSampleBuffer* getBufferForVelocity (float velocity);
-
+    
     AudioSampleBuffer* getBuffer(int timbre, float velocity){
         velocity *= 127;
         return buffer.getVelRange(velocity)->getNextSample();
+    }
+    bool checkHiHat(int noteNumber)
+    {
+        printf("Sound: Checking Hi Hat(): Note = %d\n", noteNumber);
+        isHiHat = (noteNumber == 54 || noteNumber == 56 || noteNumber == 58 || noteNumber == 47);
+        if (isHiHat == true)
+        {
+            printf("Sound, Note = %d Is Hi Hat.\n", noteNumber);
+            return true;
+        }
+        else
+        {
+            printf("Sound, Note = %d Is NOT a Hi Hat.\n", noteNumber);
+            return false;
+        }
     }
 private:
     int note;
     int channel;
     int ID;
+    bool isHiHat;
+    
     Drum buffer;
 };
 

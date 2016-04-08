@@ -14,7 +14,7 @@
 #include "DrumSynthVoice.h"
 
 //==============================================================================
-Fyp_samplerPrototype2AudioProcessor::Fyp_samplerPrototype2AudioProcessor()
+Fyp_samplerPrototype2AudioProcessor::Fyp_samplerPrototype2AudioProcessor() : Thread ("loader thread")
 {
     /** Setting up multi-voice polyphony*/
     synth.setCurrentPlaybackSampleRate(44100);
@@ -23,76 +23,75 @@ Fyp_samplerPrototype2AudioProcessor::Fyp_samplerPrototype2AudioProcessor()
     }
     
     createEditor();
-
     
-////    noteHandler();
-//    
-//    //- Will use loops to do this, for now just leaving it like this for clarity of what is actually happening
-//    
-    /** Applying all the sounds */
-//    synth.addSound(new DrumSound(48, 0, 0, 9, 0));/** Bass Drum In */
-    synth.addSound(new DrumSound(48, 0, 1, 9, 1));/** Bass Drum Out */
-    synth.addSound(new DrumSound(50, 0, 2, 9, 2));/** Snare Up */
-    synth.addSound(new DrumSound(50, 0, 3, 9, 3));/** Snare Down */
-    synth.addSound(new DrumSound(57, 0, 4, 9, 4));/** High Tom */
-    synth.addSound(new DrumSound(55, 0, 5, 9, 5));/** Mid Tom */
-    synth.addSound(new DrumSound(53, 0, 6, 9, 6));/** Low Tom */
-    
-    /** Hats Closed Shaft */
-    synth.addSound(new DrumSound(54, 0, 8, 0, 7));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(54, 0, 8, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(54, 0, 8, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(54, 0, 8, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(54, 0, 8, 4, 13));/** Hats Closed Room R */
-    
-    /** Hats Sizzle Shaft */
-    synth.addSound(new DrumSound(56, 0, 9, 0, 7));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(56, 0, 9, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(56, 0, 9, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(56, 0, 9, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(56, 0, 9, 4, 13));/** Hats Closed Room R */
-    
-    /** Hats Open Shaft */
-    synth.addSound(new DrumSound(58, 0, 10, 0, 7));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(58, 0, 10, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(58, 0, 10, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(58, 0, 10, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(58, 0, 10, 4, 13));/** Hats Closed Room R */
-    
-    /** Hats Pedal */
-    synth.addSound(new DrumSound(47, 0, 11, 0, 7));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(47, 0, 11, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(47, 0, 11, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(47, 0, 11, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(47, 0, 11, 4, 13));/** Hats Closed Room R */
-    
-    /** Crash Shaft */
-    synth.addSound(new DrumSound(60, 0, 15, 0, 8));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(60, 0, 15, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(60, 0, 15, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(60, 0, 15, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(60, 0, 15, 4, 13));/** Hats Closed Room R */
-    
-    /** Ride Tip */
-    synth.addSound(new DrumSound(63, 0, 12, 0, 10));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(63, 0, 12, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(63, 0, 12, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(63, 0, 12, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(63, 0, 12, 4, 13));/** Hats Closed Room R */
-    
-    /** Ride Bell */
-    synth.addSound(new DrumSound(65, 0, 13, 0, 10));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(65, 0, 13, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(65, 0, 13, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(65, 0, 13, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(65, 0, 13, 4, 13));/** Hats Closed Room R */
-    
-    /** Splash Crash */
-    synth.addSound(new DrumSound(66, 0, 14, 0, 9));/** Hats Closed Close Mic */
-    synth.addSound(new DrumSound(66, 0, 14, 1, 12));/** Hats Closed OH L */
-    synth.addSound(new DrumSound(66, 0, 14, 2, 12));/** Hats Closed OH R */
-    synth.addSound(new DrumSound(66, 0, 14, 3, 13));/** Hats Closed Room L */
-    synth.addSound(new DrumSound(66, 0, 14, 4, 13));/** Hats Closed Room R */
+    ////    noteHandler();
+    //
+    //    //- Will use loops to do this, for now just leaving it like this for clarity of what is actually happening
+    //
+    //    /** Applying all the sounds */
+    //    synth.addSound(new DrumSound(48, 0, 0, 9, 0));/** Bass Drum In */
+    //    synth.addSound(new DrumSound(48, 0, 1, 9, 1));/** Bass Drum Out */
+    //    synth.addSound(new DrumSound(50, 0, 2, 9, 2));/** Snare Up */
+    //    synth.addSound(new DrumSound(50, 0, 3, 9, 3));/** Snare Down */
+    //    synth.addSound(new DrumSound(57, 0, 4, 9, 4));/** High Tom */
+    //    synth.addSound(new DrumSound(55, 0, 5, 9, 5));/** Mid Tom */
+    //    synth.addSound(new DrumSound(53, 0, 6, 9, 6));/** Low Tom */
+    //
+    //    /** Hats Closed Shaft */
+    //    synth.addSound(new DrumSound(54, 0, 8, 0, 7));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(54, 0, 8, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(54, 0, 8, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(54, 0, 8, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(54, 0, 8, 4, 13));/** Hats Closed Room R */
+    //
+    //    /** Hats Sizzle Shaft */
+    //    synth.addSound(new DrumSound(56, 0, 9, 0, 7));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(56, 0, 9, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(56, 0, 9, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(56, 0, 9, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(56, 0, 9, 4, 13));/** Hats Closed Room R */
+    //
+    //    /** Hats Open Shaft */
+    //    synth.addSound(new DrumSound(58, 0, 10, 0, 7));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(58, 0, 10, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(58, 0, 10, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(58, 0, 10, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(58, 0, 10, 4, 13));/** Hats Closed Room R */
+    //
+    //    /** Hats Pedal */
+    //    synth.addSound(new DrumSound(47, 0, 11, 0, 7));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(47, 0, 11, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(47, 0, 11, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(47, 0, 11, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(47, 0, 11, 4, 13));/** Hats Closed Room R */
+    //
+    //    /** Crash Shaft */
+    //    synth.addSound(new DrumSound(60, 0, 15, 0, 8));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(60, 0, 15, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(60, 0, 15, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(60, 0, 15, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(60, 0, 15, 4, 13));/** Hats Closed Room R */
+    //
+    //    /** Ride Tip */
+    //    synth.addSound(new DrumSound(63, 0, 12, 0, 10));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(63, 0, 12, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(63, 0, 12, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(63, 0, 12, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(63, 0, 12, 4, 13));/** Hats Closed Room R */
+    //
+    //    /** Ride Bell */
+    //    synth.addSound(new DrumSound(65, 0, 13, 0, 10));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(65, 0, 13, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(65, 0, 13, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(65, 0, 13, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(65, 0, 13, 4, 13));/** Hats Closed Room R */
+    //
+    //    /** Splash Crash */
+    //    synth.addSound(new DrumSound(66, 0, 14, 0, 9));/** Hats Closed Close Mic */
+    //    synth.addSound(new DrumSound(66, 0, 14, 1, 12));/** Hats Closed OH L */
+    //    synth.addSound(new DrumSound(66, 0, 14, 2, 12));/** Hats Closed OH R */
+    //    synth.addSound(new DrumSound(66, 0, 14, 3, 13));/** Hats Closed Room L */
+    //    synth.addSound(new DrumSound(66, 0, 14, 4, 13));/** Hats Closed Room R */
     
 }
 
@@ -183,10 +182,10 @@ void Fyp_samplerPrototype2AudioProcessor::prepareToPlay (double sampleRate, int 
 {
     sampleRate = 44100;
     synth.setCurrentPlaybackSampleRate(sampleRate);
-
+    
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-
+    
 }
 
 void Fyp_samplerPrototype2AudioProcessor::releaseResources()
@@ -202,7 +201,10 @@ void Fyp_samplerPrototype2AudioProcessor::processBlock (AudioSampleBuffer& buffe
         buffer.clear (i, 0, buffer.getNumSamples());
     
     const int numSamples = buffer.getNumSamples();
-
+    
+    //    midiMessages.addEvents(const juce::MidiBuffer &otherBuffer, <#int startSample#>, <#int numSamples#>, <#int sampleDeltaToAdd#>) //GRAB FROM A MIDI BUFFER IN THE UI
+    //    SET START SAMPLE TO 0 NUM SAMPLES TO numSamples  AND SAMPLEDATA TO 0.
+    
     synth.renderNextBlock(buffer, midiMessages, 0, numSamples);
     
 }
@@ -224,12 +226,14 @@ void Fyp_samplerPrototype2AudioProcessor::getStateInformation (MemoryBlock& dest
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+//    destData.setSize(1);
 }
 
 void Fyp_samplerPrototype2AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    
 }
 
 //==============================================================================
@@ -238,15 +242,42 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new Fyp_samplerPrototype2AudioProcessor();
 }
+
+
+void Fyp_samplerPrototype2AudioProcessor::initiateSoundLoadingThread()
+{
+    startThread();
+}
+
+void Fyp_samplerPrototype2AudioProcessor::run()
+{
+    loadSounds();
+}
+
 void Fyp_samplerPrototype2AudioProcessor::loadSounds()
 {
-        /** Applying all the sounds */
-if (soundsLoaded)
-{
-    
-}
-    else if (soundsLoaded == false)
+    /** Applying all the sounds */
+    if (soundsLoaded.get() == 0)
     {
+        
+//        const int data[][5] = {
+//            { 48, 0, 0, 9, 0 },
+//            { 48, 0, 1, 9, 1 }
+//        };
+        
+//        const int count = numElementsInArray(data);
+        
+        
+        
+//        for (int i = 0; i < count; ++i)
+//        {
+//            if (threadShouldExit())
+//                return;
+//            
+//            synth.addSound(new DrumSound (data[i][0], data[i][1], data[i][2], data[i][3], data[i][4]));
+//            fraction.set ((float) i / (count - 1));
+//        }
+        
         synth.addSound(new DrumSound(48, 0, 0, 9, 0));/** Bass Drum In */
         synth.addSound(new DrumSound(48, 0, 1, 9, 1));/** Bass Drum Out */
         synth.addSound(new DrumSound(50, 0, 2, 9, 2));/** Snare Up */
@@ -254,63 +285,70 @@ if (soundsLoaded)
         synth.addSound(new DrumSound(57, 0, 4, 9, 4));/** High Tom */
         synth.addSound(new DrumSound(55, 0, 5, 9, 5));/** Mid Tom */
         synth.addSound(new DrumSound(53, 0, 6, 9, 6));/** Low Tom */
-    
+        
         /** Hats Closed Shaft */
         synth.addSound(new DrumSound(54, 0, 8, 0, 7));/** Hats Closed Close Mic */
         synth.addSound(new DrumSound(54, 0, 8, 1, 12));/** Hats Closed OH L */
         synth.addSound(new DrumSound(54, 0, 8, 2, 12));/** Hats Closed OH R */
         synth.addSound(new DrumSound(54, 0, 8, 3, 13));/** Hats Closed Room L */
         synth.addSound(new DrumSound(54, 0, 8, 4, 13));/** Hats Closed Room R */
-    
+        
         /** Hats Sizzle Shaft */
         synth.addSound(new DrumSound(56, 0, 9, 0, 7));/** Hats Closed Close Mic */
         synth.addSound(new DrumSound(56, 0, 9, 1, 12));/** Hats Closed OH L */
         synth.addSound(new DrumSound(56, 0, 9, 2, 12));/** Hats Closed OH R */
         synth.addSound(new DrumSound(56, 0, 9, 3, 13));/** Hats Closed Room L */
         synth.addSound(new DrumSound(56, 0, 9, 4, 13));/** Hats Closed Room R */
-    
+        
         /** Hats Open Shaft */
         synth.addSound(new DrumSound(58, 0, 10, 0, 7));/** Hats Closed Close Mic */
         synth.addSound(new DrumSound(58, 0, 10, 1, 12));/** Hats Closed OH L */
         synth.addSound(new DrumSound(58, 0, 10, 2, 12));/** Hats Closed OH R */
         synth.addSound(new DrumSound(58, 0, 10, 3, 13));/** Hats Closed Room L */
         synth.addSound(new DrumSound(58, 0, 10, 4, 13));/** Hats Closed Room R */
-    
+        
         /** Hats Pedal */
         synth.addSound(new DrumSound(47, 0, 11, 0, 7));/** Hats Closed Close Mic */
         synth.addSound(new DrumSound(47, 0, 11, 1, 12));/** Hats Closed OH L */
         synth.addSound(new DrumSound(47, 0, 11, 2, 12));/** Hats Closed OH R */
         synth.addSound(new DrumSound(47, 0, 11, 3, 13));/** Hats Closed Room L */
         synth.addSound(new DrumSound(47, 0, 11, 4, 13));/** Hats Closed Room R */
-    
+        
         /** Crash Shaft */
         synth.addSound(new DrumSound(60, 0, 15, 0, 8));/** Hats Closed Close Mic */
         synth.addSound(new DrumSound(60, 0, 15, 1, 12));/** Hats Closed OH L */
         synth.addSound(new DrumSound(60, 0, 15, 2, 12));/** Hats Closed OH R */
         synth.addSound(new DrumSound(60, 0, 15, 3, 13));/** Hats Closed Room L */
         synth.addSound(new DrumSound(60, 0, 15, 4, 13));/** Hats Closed Room R */
-    
-        /** Ride Tip */
-        synth.addSound(new DrumSound(63, 0, 12, 0, 10));/** Hats Closed Close Mic */
-        synth.addSound(new DrumSound(63, 0, 12, 1, 12));/** Hats Closed OH L */
-        synth.addSound(new DrumSound(63, 0, 12, 2, 12));/** Hats Closed OH R */
-        synth.addSound(new DrumSound(63, 0, 12, 3, 13));/** Hats Closed Room L */
-        synth.addSound(new DrumSound(63, 0, 12, 4, 13));/** Hats Closed Room R */
-    
-        /** Ride Bell */
-        synth.addSound(new DrumSound(65, 0, 13, 0, 10));/** Hats Closed Close Mic */
-        synth.addSound(new DrumSound(65, 0, 13, 1, 12));/** Hats Closed OH L */
-        synth.addSound(new DrumSound(65, 0, 13, 2, 12));/** Hats Closed OH R */
-        synth.addSound(new DrumSound(65, 0, 13, 3, 13));/** Hats Closed Room L */
-        synth.addSound(new DrumSound(65, 0, 13, 4, 13));/** Hats Closed Room R */
-    
+        
         /** Splash Crash */
         synth.addSound(new DrumSound(66, 0, 14, 0, 9));/** Hats Closed Close Mic */
         synth.addSound(new DrumSound(66, 0, 14, 1, 12));/** Hats Closed OH L */
         synth.addSound(new DrumSound(66, 0, 14, 2, 12));/** Hats Closed OH R */
         synth.addSound(new DrumSound(66, 0, 14, 3, 13));/** Hats Closed Room L */
         synth.addSound(new DrumSound(66, 0, 14, 4, 13));/** Hats Closed Room R */
-    
-    soundsLoaded = true;
+        
+        /** Ride Tip */
+        synth.addSound(new DrumSound(63, 0, 12, 0, 10));/** Hats Closed Close Mic */
+        synth.addSound(new DrumSound(63, 0, 12, 1, 12));/** Hats Closed OH L */
+        synth.addSound(new DrumSound(63, 0, 12, 2, 12));/** Hats Closed OH R */
+        synth.addSound(new DrumSound(63, 0, 12, 3, 13));/** Hats Closed Room L */
+        synth.addSound(new DrumSound(63, 0, 12, 4, 13));/** Hats Closed Room R */
+        
+        /** Ride Bell */
+        synth.addSound(new DrumSound(65, 0, 13, 0, 10));/** Hats Closed Close Mic */
+        synth.addSound(new DrumSound(65, 0, 13, 1, 12));/** Hats Closed OH L */
+        synth.addSound(new DrumSound(65, 0, 13, 2, 12));/** Hats Closed OH R */
+        synth.addSound(new DrumSound(65, 0, 13, 3, 13));/** Hats Closed Room L */
+        synth.addSound(new DrumSound(65, 0, 13, 4, 13));/** Hats Closed Room R */
+        
+        //        /** China Crash */
+        //        synth.addSound(new DrumSound(66, 0, 14, 0, 11));/** Hats Closed Close Mic */
+        //        synth.addSound(new DrumSound(66, 0, 14, 1, 12));/** Hats Closed OH L */
+        //        synth.addSound(new DrumSound(66, 0, 14, 2, 12));/** Hats Closed OH R */
+        //        synth.addSound(new DrumSound(66, 0, 14, 3, 13));/** Hats Closed Room L */
+        //        synth.addSound(new DrumSound(66, 0, 14, 4, 13));/** Hats Closed Room R */
+        
+        soundsLoaded.set (1);
     }
 }

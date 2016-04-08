@@ -41,6 +41,10 @@ public:
     {
         return mixer->getPan(pannerID);
     }
+    void setMeter(int meterID, float value)
+    {
+        mixer->setMeter(meterID, value);
+    }
     void setDef()
     {
         mixer->setDefaults();
@@ -52,6 +56,7 @@ private:
     SequencerComponent *seqComp;
     TabbedComponent tabBar;
     ScopedPointer<TextButton> loadButton;
+    Array<int> sliderValues;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     Fyp_samplerPrototype2AudioProcessor& processor;

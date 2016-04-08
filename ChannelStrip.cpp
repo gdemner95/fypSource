@@ -22,15 +22,16 @@
 
 #include "ChannelStrip.h"
 
-
 //[MiscUserDefs] You can add your own user definitions and misc code here...
+//ChannelStrip::ChannelStrip (int channelID) : ID (channelID)
+
 //[/MiscUserDefs]
 
 //==============================================================================
-ChannelStrip::ChannelStrip ()
+ChannelStrip::ChannelStrip (int channelID) : ID (channelID)
 {
     //[Constructor_pre] You can add your own custom stuff here..
-
+    
     //[/Constructor_pre]
 
 
@@ -38,7 +39,6 @@ ChannelStrip::ChannelStrip ()
     //[/UserPreSize]
 
     setSize (600, 400);
-
 
     //[Constructor] You can add your own custom stuff here..
 
@@ -48,7 +48,7 @@ ChannelStrip::ChannelStrip ()
     fader->setSliderStyle(Slider::LinearVertical);
     fader->setTextBoxStyle(Slider::TextBoxBelow, false, 40, 20);
     fader->setBounds(15, 25, 50, 160);
-    fader->setRange (0, 1, 0.1);
+    fader->setRange (0, 1, 0.01);
     fader->setColour (Slider::thumbColourId, Colours::red);
     fader->setColour (Slider::trackColourId, Colours::grey);
     fader->addListener(this);
@@ -57,7 +57,7 @@ ChannelStrip::ChannelStrip ()
     panner->setSliderStyle(Slider::LinearHorizontal);
     panner->setTextBoxStyle(Slider::NoTextBox, false, 40, 20);
     panner->setBounds(0, 5, 60, 25);
-    panner->setRange (0, 1, 0.1);
+    panner->setRange (0, 1, 0.01);
     panner->setColour (Slider::thumbColourId, Colours::red);
     panner->setColour (Slider::trackColourId, Colours::grey);
     panner->addListener(this);
@@ -70,9 +70,16 @@ ChannelStrip::ChannelStrip ()
     meter->setRange (0, 1, 0.001);
     meter->setColour (Slider::thumbColourId, Colours::red);
     meter->setColour (Slider::trackColourId, Colours::grey);
-    meter->setEnabled(false);
+//    meter->setEnabled(false);
     meter->addListener(this);
 
+    addAndMakeVisible(label = new Label);
+    char buffer[128] = { 0 };
+    sprintf(buffer, "%s", stripNames[ID]);
+    label->setText(buffer, dontSendNotification);
+    label->setBounds(0, 180, 60, 25);
+    label->setJustificationType(4);
+    
     //[/Constructor]
 }
 
@@ -135,8 +142,8 @@ void ChannelStrip::buttonClicked (Button* buttonThatWasClicked)
 void ChannelStrip::setMeter(float input)
 {
     //level = 20 * Log (input / 1);
-    float dbV = 20 * log(input / 1.0);
-    meter->setValue(dbV, dontSendNotification);
+//    float dbV = 20 * log(input / 1.0);
+    meter->setValue(input, dontSendNotification);
 }
 float ChannelStrip::getFaderValue()
 {

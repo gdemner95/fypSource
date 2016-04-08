@@ -57,7 +57,7 @@ public:
         return channelStrips[pannerID]->getPan();
     }
     void setDefaults(){
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 14; i++)
         {
             channelStrips[i]->setFader(1.0);
             channelStrips[i]->setPan(0.5);
@@ -71,8 +71,6 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
-
-
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.

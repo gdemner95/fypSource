@@ -12,8 +12,8 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
-class Fyp_samplerPrototype2AudioProcessor  : public AudioProcessor
+#include "Synth.h"
+class Fyp_samplerPrototype2AudioProcessor  : public AudioProcessor, private Thread
 {
 public:
     //==============================================================================
@@ -54,27 +54,34 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    float sliderValue = 0;
-    
-    void setSliderValue(float value)
-    {
-        sliderValue = 1.0;
-    };
-    
-    float getSliderValue()
-    {
-        return sliderValue;
-    };
+    //    float sliderValue = 0;
+    //
+    //    void setSliderValue(float value)
+    //    {
+    //        sliderValue = 1.0;
+    //    };
+    //
+    //    float getSliderValue()
+    //    {
+    //        return sliderValue;
+    //    };
     
     Fyp_samplerPrototype2AudioProcessor* getProcessor()
     {
         return this;
     }
-    Synthesiser synth;
+//    Synthesiser synth;
+    gSynth synth;
+    
+    void initiateSoundLoadingThread();
+    
+private:
+    void run() override;
     void loadSounds();
 
-private:
-    bool soundsLoaded;
+    
+    Atomic<int> soundsLoaded;
+    Atomic<float> fraction;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Fyp_samplerPrototype2AudioProcessor)
 };

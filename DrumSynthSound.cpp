@@ -41,35 +41,36 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex, int ID)
                                     true,
                                     true);
                 
-//                printf("sounds added: %s to %d_%d_%d \n", charBuffer, 0 ,v ,s);
+                //                printf("sounds added: %s to %d_%d_%d \n", charBuffer, 0 ,v ,s);
             }
         }
     }
     else
     {
+        checkHiHat(note);
         if(fileNameIndex == 10 || fileNameIndex == 11 || fileNameIndex == 13)
         {
-        for (int v = 0; v < 6; v++)
-        {
-            for (int s = 0; s < 6; s++)
+            for (int v = 0; v < 6; v++)
             {
-                sprintf(charBuffer, "%s%s%s%s", fileName[fileNameIndex], cymbalMics[micIndex], velocityIndex[5], stringEnd[s] );
-                
-                File tempFile = localDir.getChildFile(charBuffer);
-                
-                drumReader[s] = formatManager.createReaderFor(tempFile);
-                
-                buffer.velocities[v].samples[s].setSize(drumReader[s]->numChannels, drumReader[s]->lengthInSamples);
-                drumReader[s]->read(&buffer.velocities[v].samples[s],
-                                    0,
-                                    drumReader[s]->lengthInSamples,
-                                    0,
-                                    true,
-                                    true);
-                
-//                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
+                for (int s = 0; s < 6; s++)
+                {
+                    sprintf(charBuffer, "%s%s%s%s", fileName[fileNameIndex], cymbalMics[micIndex], velocityIndex[5], stringEnd[s] );
+                    
+                    File tempFile = localDir.getChildFile(charBuffer);
+                    
+                    drumReader[s] = formatManager.createReaderFor(tempFile);
+                    
+                    buffer.velocities[v].samples[s].setSize(drumReader[s]->numChannels, drumReader[s]->lengthInSamples);
+                    drumReader[s]->read(&buffer.velocities[v].samples[s],
+                                        0,
+                                        drumReader[s]->lengthInSamples,
+                                        0,
+                                        true,
+                                        true);
+                    
+                    //                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
+                }
             }
-        }
         }
         else
         {
@@ -94,7 +95,7 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex, int ID)
                     //                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
                 }
             }
-
+            
             
         }
     }

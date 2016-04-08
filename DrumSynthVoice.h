@@ -16,36 +16,45 @@
 #include "DrumSynthSound.h"
 #include "PluginProcessor.h"
 #include "noteHandling.h"
+#include "PluginEditor.h"
+
 class DrumSynthVoice : public SynthesiserVoice
 {
 public:
     DrumSynthVoice(Fyp_samplerPrototype2AudioProcessor* processor)
     :   level(0.0),
-    tailOff(0.0), /*drumSound (nullptr)*/
+    tailOff(0.0),
+    isHiHat(false),
     p(processor),
+    drumSound (nullptr),
     currentDrumBuffer (nullptr)
     {
         
     };
     
-    bool canPlaySound(SynthesiserSound* sound) override {
-        
+    bool canPlaySound(SynthesiserSound* sound) override
+    {
         return dynamic_cast<DrumSound*>(sound) != nullptr;
     }
     
-    void setPlayingHiHat(int noteNumber){
-        if (noteNumber == 54 || noteNumber == 56 || noteNumber == 58 || noteNumber == 47)
-        {
-             isHiHat = true;
-        }
-
-    }
-    bool getPlayingHiHat()
+    bool checkHiHat(int noteNumber)
     {
-        if(isHiHat)
+        printf("Voice: Checking Hi Hat(): Note = %d\n", noteNumber);
+        isHiHat = (noteNumber == 54 || noteNumber == 56 || noteNumber == 58 || noteNumber == 47);
+        if (isHiHat == true)
+        {
+            printf("Note = %d Is Hi Hat.\n", noteNumber);
             return true;
+        }
         else
+        {
+            printf("Note = %d Is NOT a Hi Hat.\n", noteNumber);
             return false;
+        }
+    }
+    bool isHat()
+    {
+        return isHiHat;
     }
     
     void pitchWheelMoved (int newPitchWheelValue) override {}
@@ -55,7 +64,7 @@ public:
     
     void stopNote(float velocity, bool allowTailOff) override
     {
-        allowTailOff = true;
+//        printf("Voice: stopNote()\n");
         if (allowTailOff)
         {
             if (tailOff == 0.0)
@@ -66,22 +75,22 @@ public:
             clearCurrentNote();
             currentDrumBuffer = nullptr;
         }
-        if(velocity == 1){
-            clearCurrentNote();
-            currentDrumBuffer = nullptr;
-        }
     }
     
     void renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples) override;
     
-    
+    void setMeter(int meterID, float value)
+    {
+        editor->setMeter( meterID, value);
+    }
 private:
     float fLevel, fPan;
     double level, tailOff;
-    bool isHiHat;
     int check;
+    bool isHiHat;
     ScopedPointer<noteHandler> noteHandle;
     Fyp_samplerPrototype2AudioProcessor* p;
+    Fyp_samplerPrototype2AudioProcessorEditor* editor;
     DrumSound* drumSound;
     AudioSampleBuffer* currentDrumBuffer;
     int positionInBuffer;
