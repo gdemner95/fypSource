@@ -56,6 +56,7 @@ private:
     SequencerComponent *seqComp;
     TabbedComponent tabBar;
     ScopedPointer<TextButton> loadButton;
+    ScopedPointer<ProgressBar> loadBar;
     Array<int> sliderValues;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
