@@ -41,7 +41,6 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex, int ID)
                                     true,
                                     true);
                 
-                //                printf("sounds added: %s to %d_%d_%d \n", charBuffer, 0 ,v ,s);
             }
         }
     }
@@ -68,7 +67,6 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex, int ID)
                                         true,
                                         true);
                     
-                    //                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
                 }
             }
         }
@@ -92,7 +90,6 @@ DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex, int ID)
                                         true,
                                         true);
                     
-                    //                printf("sounds added: %s to %d_%d_%d_%d \n", charBuffer, 0 ,v ,s, micIndex);
                 }
             }
             

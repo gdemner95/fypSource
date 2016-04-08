@@ -32,10 +32,12 @@ SamplerGUI::SamplerGUI ()
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+
     //[UserPreSize]
     //[/UserPreSize]
 
     setSize (800, 500);
+
 
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
@@ -45,6 +47,8 @@ SamplerGUI::~SamplerGUI()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
+
+
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
@@ -70,6 +74,8 @@ void SamplerGUI::resized()
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
+
+
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 

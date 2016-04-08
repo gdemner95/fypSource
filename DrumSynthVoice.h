@@ -25,6 +25,7 @@ public:
     :   level(0.0),
     tailOff(0.0),
     isHiHat(false),
+    shouldKill(false),
     p(processor),
     drumSound (nullptr),
     currentDrumBuffer (nullptr)
@@ -39,16 +40,13 @@ public:
     
     bool checkHiHat(int noteNumber)
     {
-        printf("Voice: Checking Hi Hat(): Note = %d\n", noteNumber);
         isHiHat = (noteNumber == 54 || noteNumber == 56 || noteNumber == 58 || noteNumber == 47);
         if (isHiHat == true)
         {
-            printf("Note = %d Is Hi Hat.\n", noteNumber);
             return true;
         }
         else
         {
-            printf("Note = %d Is NOT a Hi Hat.\n", noteNumber);
             return false;
         }
     }
@@ -56,7 +54,10 @@ public:
     {
         return isHiHat;
     }
-    
+//    bool shouldKillNote(int midiNoteNumber)
+//    {
+//        if(keyIsDown)
+//    }
     void pitchWheelMoved (int newPitchWheelValue) override {}
     void controllerMoved (int controllerNumber, int newControllerValue) override {}
     void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) override;
@@ -64,11 +65,14 @@ public:
     
     void stopNote(float velocity, bool allowTailOff) override
     {
-//        printf("Voice: stopNote()\n");
         if (allowTailOff)
         {
-            if (tailOff == 0.0)
-                tailOff = 1.0;
+            if(isHiHat)
+            {
+                if (tailOff == 0.0)
+                    tailOff = 1.0;
+                shouldKill = false;
+            }
         }
         else
         {
@@ -88,6 +92,9 @@ private:
     double level, tailOff;
     int check;
     bool isHiHat;
+    bool shouldKill;
+    bool keyIsDown;
+    bool sustainPedalDown;
     ScopedPointer<noteHandler> noteHandle;
     Fyp_samplerPrototype2AudioProcessor* p;
     Fyp_samplerPrototype2AudioProcessorEditor* editor;

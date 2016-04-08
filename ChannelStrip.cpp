@@ -22,23 +22,24 @@
 
 #include "ChannelStrip.h"
 
+
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //ChannelStrip::ChannelStrip (int channelID) : ID (channelID)
 
 //[/MiscUserDefs]
 
 //==============================================================================
-ChannelStrip::ChannelStrip (int channelID) : ID (channelID)
+ChannelStrip::ChannelStrip (int ID) : ID(ID)
 {
     //[Constructor_pre] You can add your own custom stuff here..
-    
-    //[/Constructor_pre]
 
+    //[/Constructor_pre]
 
     //[UserPreSize]
     //[/UserPreSize]
 
     setSize (600, 400);
+
 
     //[Constructor] You can add your own custom stuff here..
 
@@ -79,7 +80,7 @@ ChannelStrip::ChannelStrip (int channelID) : ID (channelID)
     label->setText(buffer, dontSendNotification);
     label->setBounds(0, 180, 60, 25);
     label->setJustificationType(4);
-    
+
     //[/Constructor]
 }
 

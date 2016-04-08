@@ -12,25 +12,18 @@
 
 void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition)
 {
+    sustainPedalDown = true;
     if(checkHiHat(midiNoteNumber))/*midiNoteNumber == 47 || midiNoteNumber == 54 || midiNoteNumber == 56 || midiNoteNumber == 58*/
     {
-        printf("Start Note: Is A Hi Hat\n");
         DrumSynthVoice* tempVoice;
         for (int i = 0; i < p->synth.getNumVoices(); i++)
         {
             tempVoice = dynamic_cast<DrumSynthVoice*>(p->synth.getVoice(i));
             if(tempVoice != nullptr && tempVoice->isHiHat && tempVoice != this)
             {
-                printf("%d:voice is a hi hat.\n", i);
-                tempVoice->stopNote(0, false);
+                tempVoice->stopNote(0, true);
             }
-            else
-                printf("%d: Voice is not a hi hat!\n", i);
         }
-    }
-    else
-    {
-        printf("Start Note Is Not A Hi Hat\n");
     }
     
     jassert (dynamic_cast<DrumSound*> (sound) != nullptr);
@@ -51,45 +44,80 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
 
 void DrumSynthVoice::renderNextBlock(AudioSampleBuffer& outputBuffer, int startSample, int numSamples)
 {
-    //    printf("%d\n", numSamples);
     if (currentDrumBuffer == nullptr)
         return;
     
     const AudioSampleBuffer& currentSound = *currentDrumBuffer;
-    
-    while( --numSamples >= 0)
+
+    if (tailOff > 0)
     {
-        for(int i = outputBuffer.getNumChannels(); --i >= 0;)
+        while( --numSamples >= 0)
         {
-            if(positionInBuffer < currentSound.getNumSamples())
+            for(int i = outputBuffer.getNumChannels(); --i >= 0;)
             {
-                const float sampleValue = currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer);
-                //                if(startSample % 256 == 0)
-                //                {
-                //                    editor->setMeter(drumSound->getID(), fabs(sampleValue));
-                //                    printf("updated\n");
-                //                }
-                switch(i)
+                if(positionInBuffer < currentSound.getNumSamples())
                 {
-                    case 0:
-                        outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * (1 - fPan));
+                    const float sampleValue = currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer);
+                    switch(i)
+                    {
+                        case 0:
+                            outputBuffer.addSample (i, startSample, ((sampleValue * (fLevel * level)) * (1 - fPan)) * tailOff);
+                            break;
+                        case 1:
+                            outputBuffer.addSample (i, startSample, ((sampleValue * (fLevel * level)) * fPan) * tailOff);
+                            break;
+                    }
+                    if(tailOff < 0.005)
+                    {
+                        clearCurrentNote();
+                        currentDrumBuffer = nullptr;
                         break;
-                    case 1:
-                        outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * fPan);
-                        break;
+                    }
+                }
+                else
+                {
+                    tailOff = 0.0;
+                    clearCurrentNote();
+                    currentDrumBuffer = nullptr;
+                    break;
                 }
             }
-            else
-            {
-                tailOff = 0.0;
-                clearCurrentNote();
-                currentDrumBuffer = nullptr;
-                break;
-            }
+            startSample++;
+            positionInBuffer++;
+            tailOff *= 0.99;
         }
-        
-        startSample++;
-        positionInBuffer++;
     }
-    //        }
-}
+    else
+    {
+        while( --numSamples >= 0)
+        {
+            for(int i = outputBuffer.getNumChannels(); --i >= 0;)
+            {
+                if(positionInBuffer < currentSound.getNumSamples())
+                {
+                    const float sampleValue = currentSound.getSample (i % currentSound.getNumChannels(), positionInBuffer);
+                    switch(i)
+                    {
+                        case 0:
+                            outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * (1 - fPan));
+                            break;
+                        case 1:
+                            outputBuffer.addSample (i, startSample, (sampleValue * (fLevel * level)) * fPan);
+                            break;
+                    }
+                    
+                }
+                else
+                {
+                    tailOff = 0.0;
+                    clearCurrentNote();
+                    currentDrumBuffer = nullptr;
+                    break;
+                }
+            }
+            startSample++;
+            positionInBuffer++;
+        }
+    }
+    
+};

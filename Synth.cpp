@@ -48,7 +48,6 @@ void gSynth::noteOn (int midiChannel, int midiNoteNumber, float velocity)
                         
                         if (otherVoice != nullptr && otherVoice != gOtherVoice && gOtherVoice->isHat())
                         {
-                            printf("Synth.cpp: is hi hat, turning voice off\n");
                             stopVoice (voice, 1.0f, false);
                         }
                     }
@@ -59,19 +58,19 @@ void gSynth::noteOn (int midiChannel, int midiNoteNumber, float velocity)
         }
     }
 };
-//void gSynth::noteOff (int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
-//{
-//    const ScopedLock sl (lock);
-//    
-//    for (int i = voices.size(); --i >= 0;)
-//    {
-//        SynthesiserVoice* const voice = voices.getUnchecked (i);
-//        
-//        if (voice->getCurrentlyPlayingNote() == midiNoteNumber
-//            && voice->isPlayingChannel (midiChannel))
-//        {
-//            if (SynthesiserSound* const sound = voice->getCurrentlyPlayingSound())
-//            {
+void gSynth::noteOff (int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
+{
+    const ScopedLock sl (lock);
+    
+    for (int i = voices.size(); --i >= 0;)
+    {
+        SynthesiserVoice* const voice = voices.getUnchecked (i);
+        
+        if (voice->getCurrentlyPlayingNote() == midiNoteNumber
+            && voice->isPlayingChannel (midiChannel))
+        {
+            if (SynthesiserSound* const sound = voice->getCurrentlyPlayingSound())
+            {
 //                if (sound->appliesToNote (midiNoteNumber)
 //                    && sound->appliesToChannel (midiChannel))
 //                {
@@ -82,7 +81,7 @@ void gSynth::noteOn (int midiChannel, int midiNoteNumber, float velocity)
 //                    if (! (voice->sustainPedalDown || voice->sostenutoPedalDown))
 //                        stopVoice (voice, velocity, allowTailOff);
 //                }
-//            }
-//        }
-//    }
-//};
+            }
+        }
+    }
+};

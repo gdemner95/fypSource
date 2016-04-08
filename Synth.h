@@ -18,9 +18,9 @@ public:
     ~gSynth() {};
     
     void noteOn (int midiChannel, int midiNoteNumber, float velocity) override;
-//    void noteOff (int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff) override;
+    void noteOff (int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff) override;
     
 private:
-    
+    bool keyIsDown;
 };
 #endif  // SYNTH_H_INCLUDED

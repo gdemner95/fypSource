@@ -30,7 +30,6 @@ struct VelRange
     
     AudioSampleBuffer* getNextSample(){
         int chosen = randomNumbers[rand() % 10];
-        //        printf("chosen sample: %d", chosen);
         return &samples[chosen];
     };
     AudioSampleBuffer samples[6];
@@ -84,16 +83,13 @@ public:
     }
     bool checkHiHat(int noteNumber)
     {
-        printf("Sound: Checking Hi Hat(): Note = %d\n", noteNumber);
         isHiHat = (noteNumber == 54 || noteNumber == 56 || noteNumber == 58 || noteNumber == 47);
         if (isHiHat == true)
         {
-            printf("Sound, Note = %d Is Hi Hat.\n", noteNumber);
             return true;
         }
         else
         {
-            printf("Sound, Note = %d Is NOT a Hi Hat.\n", noteNumber);
             return false;
         }
     }

@@ -24,6 +24,8 @@
 #include "JuceHeader.h"
 //[/Headers]
 
+
+
 //==============================================================================
 /**
                                                                     //[Comments]
@@ -44,11 +46,15 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
+
+
+
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     //[/UserVariables]
 
     //==============================================================================
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SamplerGUI)
