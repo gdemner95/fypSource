@@ -54,10 +54,7 @@ public:
     {
         return isHiHat;
     }
-//    bool shouldKillNote(int midiNoteNumber)
-//    {
-//        if(keyIsDown)
-//    }
+
     void pitchWheelMoved (int newPitchWheelValue) override {}
     void controllerMoved (int controllerNumber, int newControllerValue) override {}
     void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition) override;

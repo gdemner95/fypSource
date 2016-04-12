@@ -70,7 +70,7 @@ public:
     {
         return this;
     }
-//    Synthesiser synth;
+    //    Synthesiser synth;
     gSynth synth;
     
     void initiateSoundLoadingThread();
@@ -78,7 +78,7 @@ public:
 private:
     void run() override;
     void loadSounds();
-
+    
     
     Atomic<int> soundsLoaded;
     Atomic<float> fraction;

@@ -9,20 +9,18 @@
  */
 
 #include "DrumSynthVoice.h"
-
+/** Starts the note, gets all the values for attenuating the sound as not to cause audio thread errors */
 void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound, int currentPitchWheelPosition)
 {
     sustainPedalDown = true;
-    if(checkHiHat(midiNoteNumber))/*midiNoteNumber == 47 || midiNoteNumber == 54 || midiNoteNumber == 56 || midiNoteNumber == 58*/
+    if(checkHiHat(midiNoteNumber))
     {
         DrumSynthVoice* tempVoice;
         for (int i = 0; i < p->synth.getNumVoices(); i++)
         {
             tempVoice = dynamic_cast<DrumSynthVoice*>(p->synth.getVoice(i));
             if(tempVoice != nullptr && tempVoice->isHiHat && tempVoice != this)
-            {
                 tempVoice->stopNote(0, true);
-            }
         }
     }
     
@@ -33,8 +31,12 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
     editor = static_cast<Fyp_samplerPrototype2AudioProcessorEditor*>(p->getActiveEditor());
     positionInBuffer = 0;
     level = velocity;
+    
     int ID = drumSound->getID();
     int micIndex = drumSound->getMic();
+    
+    /** Stereo Panning for the OH and Room mics */
+    
     if(ID == 12 || ID == 13)
     {
         if (micIndex == 1)
@@ -45,7 +47,6 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
             fPan = 1 - editor->getStereoSliderValue(ID, 0);
         else if (micIndex == 4)
             fPan = editor->getStereoSliderValue(ID, 1);
-
     }
     else
     {
