@@ -95,6 +95,8 @@ private:
     bool shouldKill;
     bool keyIsDown;
     bool sustainPedalDown;
+    float fPanL;
+    float fPanR;
     ScopedPointer<noteHandler> noteHandle;
     Fyp_samplerPrototype2AudioProcessor* p;
     Fyp_samplerPrototype2AudioProcessorEditor* editor;

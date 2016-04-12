@@ -49,6 +49,10 @@ public:
     {
         mixer->setDefaults();
     }
+    float getStereoSliderValue(int ID, int channel)
+    {
+        mixer->getStereoPan(ID, channel);
+    }
 private:
     int lastInputIndex;
     MixerComponent *mixer;

@@ -67,6 +67,11 @@ public:
     {
         channelStrips[meterID]->setMeter(value);
     }
+    float getStereoPan(int ID, int channel)
+    {
+        return channelStrips[ID]->getStereoPan(channel);
+    };
+
     //[/UserMethods]
 
     void paint (Graphics& g) override;

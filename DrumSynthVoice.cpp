@@ -33,6 +33,24 @@ void DrumSynthVoice::startNote(int midiNoteNumber, float velocity, SynthesiserSo
     editor = static_cast<Fyp_samplerPrototype2AudioProcessorEditor*>(p->getActiveEditor());
     positionInBuffer = 0;
     level = velocity;
+    int ID = drumSound->getID();
+    int micIndex = drumSound->getMic();
+    if(ID == 12 || ID == 13)
+    {
+        if (micIndex == 1)
+            fPan = 1 - editor->getStereoSliderValue(ID, 0);
+        else if (micIndex == 2)
+            fPan = editor->getStereoSliderValue(ID, 1);
+        else if (micIndex == 3)
+            fPan = 1 - editor->getStereoSliderValue(ID, 0);
+        else if (micIndex == 4)
+            fPan = editor->getStereoSliderValue(ID, 1);
+
+    }
+    else
+    {
+        fPan = editor->getSliderValue(ID);
+    }
     
     /** Get level values */
     fLevel = editor->getSliderValue(drumSound->getID());

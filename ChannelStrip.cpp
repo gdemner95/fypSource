@@ -48,7 +48,7 @@ ChannelStrip::ChannelStrip (int ID) : ID(ID)
     addAndMakeVisible(fader = new Slider("Fader"));
     fader->setSliderStyle(Slider::LinearVertical);
     fader->setTextBoxStyle(Slider::TextBoxBelow, false, 40, 20);
-    fader->setBounds(15, 25, 50, 160);
+    fader->setBounds(15, 30, 50, 160);
     fader->setRange (0, 1, 0.01);
     fader->setColour (Slider::thumbColourId, Colours::red);
     fader->setColour (Slider::trackColourId, Colours::grey);
@@ -57,7 +57,7 @@ ChannelStrip::ChannelStrip (int ID) : ID(ID)
     addAndMakeVisible(panner = new Slider("Panner"));
     panner->setSliderStyle(Slider::LinearHorizontal);
     panner->setTextBoxStyle(Slider::NoTextBox, false, 40, 20);
-    panner->setBounds(0, 5, 60, 25);
+    panner->setBounds(0, 0, 60, 20);
     panner->setRange (0, 1, 0.01);
     panner->setColour (Slider::thumbColourId, Colours::red);
     panner->setColour (Slider::trackColourId, Colours::grey);
@@ -67,7 +67,7 @@ ChannelStrip::ChannelStrip (int ID) : ID(ID)
     addAndMakeVisible(meter = new Slider("meter"));
     meter->setSliderStyle(Slider::LinearBarVertical);
     meter->setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    meter->setBounds(5, 20, 20, 130);
+    meter->setBounds(5, 30, 20, 130);
     meter->setRange (0, 1, 0.001);
     meter->setColour (Slider::thumbColourId, Colours::red);
     meter->setColour (Slider::trackColourId, Colours::grey);
@@ -78,9 +78,20 @@ ChannelStrip::ChannelStrip (int ID) : ID(ID)
     char buffer[128] = { 0 };
     sprintf(buffer, "%s", stripNames[ID]);
     label->setText(buffer, dontSendNotification);
-    label->setBounds(0, 180, 60, 25);
+    label->setBounds(0, 190, 60, 25);
     label->setJustificationType(4);
 
+    if(ID == 12 || ID == 13)
+    {
+        addAndMakeVisible(panner2 = new Slider("Panner 2"));
+        panner2->setSliderStyle(Slider::LinearHorizontal);
+        panner2->setTextBoxStyle(Slider::NoTextBox, false, 40, 20);
+        panner2->setBounds(0, 15, 60, 20);
+        panner2->setRange (0, 1, 0.01);
+        panner2->setColour (Slider::thumbColourId, Colours::red);
+        panner2->setColour (Slider::trackColourId, Colours::grey);
+        panner2->addListener(this);
+    }
     //[/Constructor]
 }
 
@@ -95,6 +106,7 @@ ChannelStrip::~ChannelStrip()
     fader = nullptr;
     panner = nullptr;
     meter = nullptr;
+    panner2 = nullptr;
 
     //[/Destructor]
 }
@@ -134,6 +146,10 @@ void ChannelStrip::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         pannerValue = panner->getValue();
     }
+    else if (sliderThatWasMoved == panner2)
+    {
+        panner2Value = panner2->getValue();
+    }
 
 }
 void ChannelStrip::buttonClicked (Button* buttonThatWasClicked)
@@ -161,6 +177,15 @@ void ChannelStrip::setFader(float value)
 float ChannelStrip::getPan()
 {
     return pannerValue;
+}
+float ChannelStrip::getStereoPan(int channel)
+{
+    switch (channel){
+    case 0:
+        return panner->getValue();
+    case 1:
+        return panner2->getValue();
+    }
 }
 //[/MiscUserCode]
 

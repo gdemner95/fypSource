@@ -52,6 +52,7 @@ public:
 
     float getFaderValue();
     float getPan();
+    float getStereoPan(int channel);
     void setPan(float value);
     void setFader(float value);
     void setMeter(float input);
@@ -66,11 +67,12 @@ private:
     ScopedPointer<Slider> fader;
     ScopedPointer<Slider> meter;
     ScopedPointer<Slider> panner;
+    ScopedPointer<Slider> panner2;
     ScopedPointer<Label> label;
     float faderValue;
     float pannerValue;
+    float panner2Value;
     int ID;
-
     const char* stripNames[14] =
     {
         "BD In",

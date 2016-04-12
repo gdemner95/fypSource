@@ -73,6 +73,7 @@ public:
     bool appliesToNote (int midiNoteNumber);
     bool appliesToChannel (int midiChannel);
     int getID();
+    int getMic();
     //applies to slider?
     
     AudioSampleBuffer* getBufferForVelocity (float velocity);
@@ -97,6 +98,7 @@ private:
     int note;
     int channel;
     int ID;
+    int micIndex;
     bool isHiHat;
     
     Drum buffer;

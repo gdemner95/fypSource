@@ -12,7 +12,7 @@
 #include "Strings.h"
 
 DrumSound::DrumSound (int n, int c, int fileNameIndex, int micIndex, int ID)
-:   note (n), channel (c), ID(ID)
+:   note (n), channel (c), ID(ID), micIndex(micIndex)
 {
     File localDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getParentDirectory().getChildFile ("Resources");
     
@@ -119,5 +119,9 @@ AudioSampleBuffer* DrumSound::getBufferForVelocity (float velocity)
 int DrumSound::getID()
 {
     return ID;
+}
+int DrumSound::getMic()
+{
+    return micIndex;
 }
 
